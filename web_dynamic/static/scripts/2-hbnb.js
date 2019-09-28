@@ -17,4 +17,12 @@ $( document ).ready(function() {
     });
     $('DIV.amenities h4').html(s.length > 0 ? '<i>'+ s.substring(0, 30) + '</i>' : '&nbsp;');
   });
+
+  $.get('http://0.0.0.0:5001/api/v1/status', (data) => {
+    if (data.status === 'OK') {
+      $('DIV#api_status').addClass('available');
+    } else {
+      $('DIV#api_status').removeClass('available');
+    }
+  });
 });
