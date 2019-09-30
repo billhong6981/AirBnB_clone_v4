@@ -2,7 +2,7 @@
 
 # AirBnB Clone: Phase # 4
 
-: API with Swagger
+API with Swagger and Web Dynamic.
 
 ## Description
 
