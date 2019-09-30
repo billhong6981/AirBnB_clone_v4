@@ -220,4 +220,4 @@ github repo
 
 ## License
 
-MIT License
+MIT License - see [LICENSE](https://github.com/billhong6981/AirBnB_clone_v4/blob/master/LICENSE)
