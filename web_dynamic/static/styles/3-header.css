@@ -13,7 +13,7 @@ header {
 	border-bottom: 1px solid #CCCCCC;
 }
 
-header div#api_status {
+header div {
     height: 40px;
     width: 40px;
     background-color: #cccccc;
@@ -22,9 +22,15 @@ header div#api_status {
     margin-left: auto;
     margin-right: 30px;
     display: block;
-    padding-top: auto;
 }
 
-header div.available {
+.available {
+    height: 40px;
+    width: 40px;
     background-color: #ff545f;
+    border-radius: 50%;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: 30px;
+    display: block;
 }
