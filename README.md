@@ -212,8 +212,8 @@ github repo
 
 ## Authors
 
-* Hongtu Huang, [billhong6981](https://github.com/billhong6981)
-* Jun Zhu, [VieetBubbles](https://github.com/VieetBubbles)
+* Hongtu Huang - [billhong6981](https://github.com/billhong6981)
+* Jun Zhu - [VieetBubbles](https://github.com/VieetBubbles)
 
 ## License
 
