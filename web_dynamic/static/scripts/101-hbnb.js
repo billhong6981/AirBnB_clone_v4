@@ -1,3 +1,103 @@
+function loadPage() {
+  $.ajax({
+    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    type: 'POST',
+    contentType: 'application/json',
+    dataType: 'json',
+    data: JSON.stringify({}),
+    success: function(data) {
+      populateArticle(data);
+    }
+  });
+}
+
+function populateArticle(obj) {
+  obj.map(place => {
+    $('.places h1').after(`<article>
+			  <div class="title">
+
+			  <h2>${place.name}</h2>
+
+			  <div class="price_by_night">
+
+			  $${place.price_by_night}
+
+			  </div>
+			  </div>
+			  <div class="information">
+			  <div class="max_guest">
+			  <i class="fa fa-users fa-3x" aria-hidden="true"></i>
+
+			  <br />
+
+			  ${place.max_guest} Guests
+
+			  </div>
+			  <div class="number_rooms">
+			  <i class="fa fa-bed fa-3x" aria-hidden="true"></i>
+
+			  <br />
+
+			  ${place.number_rooms} Bedrooms
+			  </div>
+			  <div class="number_bathrooms">
+			  <i class="fa fa-bath fa-3x" aria-hidden="true"></i>
+
+			  <br />
+
+			  ${place.number_bathrooms} Bathroom
+
+			  </div>
+			  </div>
+
+			  <!-- **********************
+			  USER
+			  **********************  -->
+
+			  <div class="user">
+
+			  <strong>Owner:&nbsp;</strong>
+
+			  </div>
+			  <div class="description">
+
+			  ${place.description}
+			  </div>
+			  <br />
+			  <div>
+			  <h2>Reviews</h2>
+			  <span class="reviews" id=${place.id}>(Show)</span>
+			  </div>
+			    </article> <!-- End 1 PLACE Article -->
+			  `)
+  });
+  $('.reviews').click(function() {
+    const placeId = $(this).attr('id');
+    if ($(this).text() === '(Show)') {
+      $(this).text('(Hide)');
+      populateReviews(placeId);
+    } else {
+      $(this).text('(Show)');
+      $(`.${placeId}`).empty();
+    }
+  });
+
+}
+
+function populateReviews(placeId) {
+  const requestURL = "http://0.0.0.0:5001/api/v1/places/" + placeId + "/reviews";
+  $.get(requestURL, function(reviews) {
+    reviews.forEach(review => {
+      const view = review.text.split('<BR />').join('\n');
+      $(`#${placeId}`).after(`
+			     <p class=${placeId}>
+			     ${view}
+			     </p>
+			     `)
+    });
+  });
+}
+
 $( document ).ready(function() {
   const checkDict = {};
   $('LI#amen INPUT:checkbox').change(function () {
@@ -64,16 +164,7 @@ $( document ).ready(function() {
     }
   });
 
-  $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
-    type: 'POST',
-    contentType: 'application/json',
-    dataType: 'json',
-    data: JSON.stringify({}),
-    success: function(data) {
-      populateArticle(data);
-    }
-  });
+  loadPage();
 
   $('button').click(() => {
     let obj = {
@@ -106,82 +197,5 @@ $( document ).ready(function() {
       }
     });
   });
+
 });
-
-function populateArticle(obj) {
-  obj.map(place => {
-    const review = populaReviews(place);
-    $('.places h1').after(`<article>
-			  <div class="title">
-
-			  <h2>${place.name}</h2>
-
-			  <div class="price_by_night">
-
-			  $${place.price_by_night}
-
-			  </div>
-			  </div>
-			  <div class="information">
-			  <div class="max_guest">
-			  <i class="fa fa-users fa-3x" aria-hidden="true"></i>
-
-			  <br />
-
-			  ${place.max_guest} Guests
-
-			  </div>
-			  <div class="number_rooms">
-			  <i class="fa fa-bed fa-3x" aria-hidden="true"></i>
-
-			  <br />
-
-			  ${place.number_rooms} Bedrooms
-			  </div>
-			  <div class="number_bathrooms">
-			  <i class="fa fa-bath fa-3x" aria-hidden="true"></i>
-
-			  <br />
-
-			  ${place.number_bathrooms} Bathroom
-
-			  </div>
-			  </div>
-
-			  <!-- **********************
-			  USER
-			  **********************  -->
-
-			  <div class="user">
-
-			  <strong>Owner:&nbsp;</strong>
-
-			  </div>
-			  <div class="description">
-
-			  ${place.description}
-
-			  </div>
-			  <br />
-
-			  <div class="reviews">
-			  <h2>Reviews</h2><input type="button" id="showMe" value="Show" />
-			  <span class="reviewText">${review}</span>
-			  </div>
-
-			    </article> <!-- End 1 PLACE Article -->
-			  `)
-  });
-}
-
-function populaReviews(place) {
-  const requestURL = "http://0.0.0.0:5001/api/v1/places/" + place.id + "/reviews";
-  $.get(requestURL, function(reviews) {
-    const view = "";
-    reviews.forEach(review => {
-      let r = review.text + '\n';
-      view += r;
-    });
-    return view;
-  });
-}
